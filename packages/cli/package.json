@@ -1,6 +1,6 @@
 {
   "name": "inspect-claude",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "CLI to inspect Claude Code configuration across all scopes",
   "type": "module",
   "license": "MIT",
