@@ -1,6 +1,6 @@
 {
   "name": "@inspect-claude/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Core library for inspecting Claude Code configuration",
   "type": "module",
   "license": "MIT",
