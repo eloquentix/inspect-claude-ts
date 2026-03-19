@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 jobs:
@@ -40,3 +40,14 @@ jobs:
       - name: Publish inspect-claude
         run: npm publish --provenance --access public
         working-directory: packages/cli
+
+      - name: Build VSIX
+        run: |
+          cd packages/vscode
+          npx @vscode/vsce package --no-dependencies
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: packages/vscode/*.vsix
