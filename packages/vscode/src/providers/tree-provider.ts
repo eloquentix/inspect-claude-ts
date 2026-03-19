@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { resolve, collectResults, setColor } from '@inspect-claude/core';
-import type { ScopeResult, ComponentKind } from '@inspect-claude/core';
+import type { ScopeResult, ComponentKind, Scope } from '@inspect-claude/core';
 import type { TreeNode } from './tree-items.js';
 import { toTreeItem } from './tree-items.js';
 
@@ -10,6 +10,7 @@ export class InspectClaudeProvider implements vscode.TreeDataProvider<TreeNode> 
 
   private results: ScopeResult[] = [];
   private kindFilter: Set<ComponentKind> | null = null;
+  private scopeFilter: Set<Scope> | null = null;
 
   constructor() {
     // Disable color for VS Code — we use TreeItem styling instead
@@ -26,6 +27,11 @@ export class InspectClaudeProvider implements vscode.TreeDataProvider<TreeNode> 
     this.refresh();
   }
 
+  setScopeFilter(scopes: Scope[] | null): void {
+    this.scopeFilter = scopes ? new Set(scopes) : null;
+    this.refresh();
+  }
+
   getTreeItem(node: TreeNode): vscode.TreeItem {
     return toTreeItem(node);
   }
@@ -38,6 +44,7 @@ export class InspectClaudeProvider implements vscode.TreeDataProvider<TreeNode> 
       }
       return this.results
         .filter(r => r.groups.length > 0)
+        .filter(r => !this.scopeFilter || this.scopeFilter.has(r.scope))
         .map(result => ({ type: 'scope' as const, result }));
     }
 
@@ -57,6 +64,7 @@ export class InspectClaudeProvider implements vscode.TreeDataProvider<TreeNode> 
         return element.group.items.map(item => ({
           type: 'item' as const,
           item,
+          kind: element.group.kind,
           source: element.group.source,
         }));
       case 'item':

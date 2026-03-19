@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
-import type { ScopeResult, ComponentGroup, Item, Scope } from '@inspect-claude/core';
+import type { ScopeResult, ComponentGroup, Item, Scope, ComponentKind } from '@inspect-claude/core';
 
 export type TreeNode =
   | { type: 'scope'; result: ScopeResult }
   | { type: 'group'; group: ComponentGroup; scope: Scope }
-  | { type: 'item'; item: Item; source?: string };
+  | { type: 'item'; item: Item; kind: ComponentKind; source?: string };
 
 function scopeIcon(s: Scope): string {
   switch (s) {
@@ -13,6 +13,41 @@ function scopeIcon(s: Scope): string {
     case 'project': return '\u{1F4C2}';
     case 'local': return '\u{1F512}';
     default: return '\u{1F4CB}';
+  }
+}
+
+function kindIcon(kind: ComponentKind): vscode.ThemeIcon {
+  switch (kind) {
+    case 'Permissions':
+      return new vscode.ThemeIcon('shield', new vscode.ThemeColor('charts.purple'));
+    case 'Allowed Tools':
+      return new vscode.ThemeIcon('tools', new vscode.ThemeColor('charts.blue'));
+    case 'File Access':
+      return new vscode.ThemeIcon('file-symlink-file', new vscode.ThemeColor('charts.yellow'));
+    case 'MCP Servers':
+      return new vscode.ThemeIcon('server', new vscode.ThemeColor('charts.green'));
+    case 'Hooks':
+      return new vscode.ThemeIcon('git-commit', new vscode.ThemeColor('charts.orange'));
+    case 'Rules':
+      return new vscode.ThemeIcon('law', new vscode.ThemeColor('charts.green'));
+    case 'Settings':
+      return new vscode.ThemeIcon('gear', new vscode.ThemeColor('charts.green'));
+    case 'Skills':
+      return new vscode.ThemeIcon('sparkle', new vscode.ThemeColor('charts.green'));
+    case 'Plugins':
+      return new vscode.ThemeIcon('plug', new vscode.ThemeColor('charts.green'));
+    case 'Agents':
+      return new vscode.ThemeIcon('robot', new vscode.ThemeColor('charts.green'));
+    case 'LSP':
+      return new vscode.ThemeIcon('json', new vscode.ThemeColor('charts.green'));
+    case 'Commands':
+      return new vscode.ThemeIcon('terminal', new vscode.ThemeColor('charts.green'));
+    case 'CLAUDE.md':
+      return new vscode.ThemeIcon('book', new vscode.ThemeColor('charts.green'));
+    case 'Memory':
+      return new vscode.ThemeIcon('database', new vscode.ThemeColor('charts.green'));
+    default:
+      return new vscode.ThemeIcon('circle-outline', new vscode.ThemeColor('charts.green'));
   }
 }
 
@@ -34,6 +69,7 @@ export function toTreeItem(node: TreeNode): vscode.TreeItem {
       );
       item.description = node.group.source || '';
       item.contextValue = 'group';
+      item.iconPath = kindIcon(node.group.kind);
       if (node.group.source) {
         item.tooltip = `Source: ${node.group.source}`;
       }
@@ -48,6 +84,13 @@ export function toTreeItem(node: TreeNode): vscode.TreeItem {
         treeItem.description = node.item.detail;
       }
       treeItem.contextValue = 'item';
+
+      // Single-click opens detail panel
+      treeItem.command = {
+        command: 'inspectClaude.showDetail',
+        title: 'Show Detail',
+        arguments: [node],
+      };
 
       const tooltipParts: string[] = [];
       if (node.item.description) tooltipParts.push(node.item.description);

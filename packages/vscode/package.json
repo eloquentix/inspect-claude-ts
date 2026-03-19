@@ -3,6 +3,11 @@
   "displayName": "Inspect Claude",
   "description": "Browse Claude Code configuration in a VS Code sidebar",
   "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eloquentix/inspect-claude-ts"
+  },
   "publisher": "inspect-claude",
   "engines": {
     "vscode": "^1.85.0"
@@ -46,6 +51,15 @@
         "command": "inspectClaude.filter",
         "title": "Filter by Kind",
         "icon": "$(filter)"
+      },
+      {
+        "command": "inspectClaude.filterByScope",
+        "title": "Filter by Scope",
+        "icon": "$(list-filter)"
+      },
+      {
+        "command": "inspectClaude.showDetail",
+        "title": "Show Detail"
       }
     ],
     "menus": {
@@ -57,6 +71,11 @@
         },
         {
           "command": "inspectClaude.filter",
+          "when": "view == inspectClaude",
+          "group": "navigation"
+        },
+        {
+          "command": "inspectClaude.filterByScope",
           "when": "view == inspectClaude",
           "group": "navigation"
         }
