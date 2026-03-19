@@ -1,8 +1,20 @@
 {
   "name": "@inspect-claude/core",
   "version": "0.1.0",
-  "private": true,
+  "description": "Core library for inspecting Claude Code configuration",
   "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eloquentix/inspect-claude-ts.git",
+    "directory": "packages/core"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
