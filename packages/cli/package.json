@@ -1,0 +1,19 @@
+{
+  "name": "inspect-claude",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "inspect-claude": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@inspect-claude/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.3.0"
+  }
+}

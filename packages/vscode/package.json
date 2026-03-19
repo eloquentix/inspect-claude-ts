@@ -1,0 +1,88 @@
+{
+  "name": "inspect-claude-vscode",
+  "displayName": "Inspect Claude",
+  "description": "Browse Claude Code configuration in a VS Code sidebar",
+  "version": "0.1.0",
+  "publisher": "inspect-claude",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onView:inspectClaude"],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "inspect-claude",
+          "title": "Inspect Claude",
+          "icon": "$(search)"
+        }
+      ]
+    },
+    "views": {
+      "inspect-claude": [
+        {
+          "id": "inspectClaude",
+          "name": "Configuration"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "inspectClaude.refresh",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "inspectClaude.openFile",
+        "title": "Open File"
+      },
+      {
+        "command": "inspectClaude.copyValue",
+        "title": "Copy Value"
+      },
+      {
+        "command": "inspectClaude.filter",
+        "title": "Filter by Kind",
+        "icon": "$(filter)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "inspectClaude.refresh",
+          "when": "view == inspectClaude",
+          "group": "navigation"
+        },
+        {
+          "command": "inspectClaude.filter",
+          "when": "view == inspectClaude",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "inspectClaude.openFile",
+          "when": "view == inspectClaude && viewItem == group"
+        },
+        {
+          "command": "inspectClaude.copyValue",
+          "when": "view == inspectClaude && viewItem == item"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@inspect-claude/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.85.0",
+    "esbuild": "^0.24.0"
+  }
+}
