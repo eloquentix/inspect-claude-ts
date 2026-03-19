@@ -5,7 +5,7 @@ import {
 } from '@inspect-claude/core';
 import {
   readKey, getTermSize, enableRawMode,
-  clearScreen, moveCursor, hideCursor, showCursor,
+  clearScreen, fullClearScreen, moveCursor, hideCursor, showCursor,
   KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT,
   KEY_PGUP, KEY_PGDOWN, KEY_HOME, KEY_END,
 } from './term.js';
@@ -375,7 +375,7 @@ export async function runTUI(results: ScopeResult[]): Promise<void> {
             detailScroll = detailLines ? detailLines.length : 0;
             break;
           case 3: // Ctrl-C
-            clearScreen();
+            fullClearScreen();
             moveCursor(1, 1);
             return;
         }
@@ -459,7 +459,7 @@ export async function runTUI(results: ScopeResult[]): Promise<void> {
 
       switch (key) {
         case 113: case 3: // q or Ctrl-C
-          clearScreen();
+          fullClearScreen();
           moveCursor(1, 1);
           return;
         case 27: // ESC
@@ -469,7 +469,7 @@ export async function runTUI(results: ScopeResult[]): Promise<void> {
             cursor = 0;
             scrollOff = 0;
           } else {
-            clearScreen();
+            fullClearScreen();
             moveCursor(1, 1);
             return;
           }
